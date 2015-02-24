@@ -4,6 +4,7 @@ require 'bundler/setup'
 require 'octokit'
 require 'logger'
 require "csv"
+require 'netrc'
 
 class Time
   # remove timezone information
@@ -111,28 +112,34 @@ class QuickCache
 end
 
 # credentials in ~/.netrc
-require 'netrc'
-
 #machine api.github.com
   #login sparrovv
   #password .....
 
+# How to run:
+#
+# IMPORT_ALL=1 be ./hacks.rb
+#
 client = Octokit::Client.new(:netrc => true)
 client.auto_paginate = !!ENV["IMPORT_ALL"] || false # for testing
 closed_pull_requests = client.pulls 'simplybusiness/chopin', :state => 'closed'
 
 logger = Logger.new("log/github.log")
 logger.level = Logger::INFO
-repo = client.repo 'simplybusiness/chopin'
-rel = repo.rels[:pulls]
+
 cache = QuickCache.new('cache.log')
 
+repo = client.repo 'simplybusiness/chopin'
+rel = repo.rels[:pulls]
+
 logger.info('start importing')
+logger.info("Remaining rate limit #{client.rate_limit.remaining}")
 CSV.open("pull_requests.csv", "wb") do |csv|
 
   csv << PullRequestRecord.header
   closed_pull_requests.each do |pr|
     number = pr[:number]
+
     if cache.has?(number)
       logger.info("PR number: #{number} is cached, skipping")
       next
