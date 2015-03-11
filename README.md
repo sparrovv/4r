@@ -1,10 +1,10 @@
-# pr-analyzer
+# 4r - exploring pull requests data with R
 
-Explore closed pull requests data from GitHub repository and try to get some insights from them using R.
+Explore pull requests data from GitHub repository and try to get some insights using R.
 
 Some of the questions I was pondering about:
 
-- What's my cycle time? - How long it takes from the first commit to the merging pull request into master.
+- What's my cycle time? - How long it takes to the merge a pull request into master (start_date is the date of first commit)
 - Number of pull request per contributor
 - Mean/Median number of commits per PR
 - Mean/Median number of commits per contributor
@@ -13,8 +13,7 @@ Some of the questions I was pondering about:
 - Number of changed files per PR
 - Number of changed files per contributor
 - Pull requests trend over a period of time
-
-But that's just a scratch of the surface.
+- ...
 
 ## How to use it
 
@@ -56,3 +55,4 @@ To install `rstudio` and `r` on Mac:
 
 ### R scripts
 
+...
